@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="Tiny service health dashboard written in Go" name="description">
+    <meta content="Marcin Tojek" name="author">
+
+    <title>Argus - Tiny service health dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    .with-overflow {
+        white-space: nowrap;
+        overflow:hidden;
+        text-overflow: ellipsis;
+    }
+
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body onload="setTimeout('document.location.reload();', {{data.general.refreshDashboardEvery}} * 1000);">
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse"
+                    type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Argus</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {{#data.groups}}
+                <li>
+                    <a href="#{{ name }}">{{ name }}</a>
+                </li>
+                {{/data.groups}}
+            </ul>
+            <p class="navbar-text navbar-right" style="padding-right: 16px">
+                Last refresh: <strong>{{data.general.lastRefreshTime}}</strong> (refresh every
+                {{data.general.refreshDashboardEvery}}s)
+            </p>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Page Content -->
+<div class="container-fluid">
+    {{ #data.groups }}
+    <div class="row" id="{{ name }}">
+        <div class="col-lg-12">
+            <h3>{{ name }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        {{ #nodes }}
+        <div class="col-md-2 col-sm-3 col-xs-6">
+            <div class="alert alert-{{ status }}">
+                <div style="margin-bottom: 10px;">
+                    <div><strong>Name</strong></div>
+                    <div class="with-overflow" title="{{ name }}">{{ name }}</div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <div><strong>Type</strong></div>
+                    <div class="with-overflow" title="{{ type }}">{{ type }}</div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <div><strong>Endpoint</strong></div>
+                    <div class="with-overflow">
+                        <a class="alert-link" href="{{ endpoint }}" target="_new" title="{{ endpoint }}">{{ endpoint
+                            }}</a>
+                    </div>
+                </div>
+                <div>
+                    <div><strong>Status</strong></div>
+                    {{#message}}
+                    <div class="with-overflow" title="{{ message }}">{{ message }}</div>
+                    {{/message}}
+                </div>
+            </div>
+        </div>
+        {{ /nodes }}
+    </div>
+    <!-- /.row -->
+    {{ /data.groups }}
+</div>
+<!-- /.container -->
+
+<!-- Footer -->
+<div class="container-fluid">
+    <br/>
+    <p style="text-align: center">
+        If you find it useful, Send a coffee to Vamshi :P
+    </p>
+    <br/>
+</div>
+
+<!-- jQuery Version 1.11.1 -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

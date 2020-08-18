@@ -1,0 +1,22 @@
+---
+general:
+  httpClientTimeout: 10
+  refreshDashboardEvery: 60
+groups:
+  - name: Google Suite
+    nodes:
+      - name: Search
+        endpoint: https://www.google.com
+        type: HTTP
+
+      - name: Mail
+        endpoint: https://www.gmail.com
+        type: HTTP
+  - name: Amazon Suite
+    nodes:
+      - name: Shopping
+        endpoint: https://www.amazon.sg
+        type: HTTP
+      - name: FakeShopping
+        endpoint: https://www.amazon.sg-fake
+        type: HTTP
